@@ -8,27 +8,27 @@
 - datetime
 
 ### Usage
-** Generate a new e-mail **
+**Generate a new e-mail**
 ```
 In [1]: email = TenMinutesEmail()
 In [2]: email
 Out[2]: (b3763093@urhen.com, seconds_left=594)
 ```
-** Check seconds left **
+**Check seconds left**
 ```
 In [3]: email.seconds_left()
 Out[3]: 472
 ```
 > You can use `email.seconds_left(True)`, to get a more precise value but is a little bit more slow
 
-** Verify if the e-mail is expired **
+**Verify if the e-mail is expired**
 ```
 In [4]: email.is_alive()
 Out[4]: True
 ```
 > You can use `email.is_alive(True)`, to get a more precise value but is a little bit more slow
 
-** Request 10 minutes more **
+**Request 10 minutes more**
 ```
 In [5]: email.reset_time()
 
