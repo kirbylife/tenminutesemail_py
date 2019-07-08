@@ -27,6 +27,7 @@ In [4]: email.is_alive()
 Out[4]: True
 ```
 > You can use `email.is_alive(True)`, to get a more precise value but is a little bit more slow
+
 ** Request 10 minutes more **
 ```
 In [5]: email.reset_time()
