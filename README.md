@@ -31,8 +31,7 @@ Out[4]: True
 **Request 10 minutes more**
 ```
 In [5]: email.reset_time()
-
 ```
 
 ### TO-DO
-1. Access to the e-mail received
+- [x] Access to the e-mails received
