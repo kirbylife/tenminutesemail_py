@@ -18,10 +18,13 @@ _HEADERS = {
 
 class TenMinutesEmail:
     _endpoint = "https://10minutemail.com/10MinuteMail/resources/session/{}".format
+    _msg_endpoint = "https://10minutemail.com/10MinuteMail/resources/messages/messagesAfter/{}".format
+    total_messages = 0
 
     def __init__(self):
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+        self.messages = []
 
         r = get("https://10minutemail.com/10MinuteMail/index.html",
                 headers=_HEADERS)
@@ -49,17 +52,32 @@ class TenMinutesEmail:
             return (datetime.now() - self.updated_at) < timedelta(minutes=10)
 
     def reset_time(self):
-        assert (self.is_alive())
+        assert self.is_alive()
         self.updated_at = datetime.now()
         get(self._endpoint("reset"), cookies=self.cookies, headers=_HEADERS)
 
     def seconds_left(self, check_server=False):
-        assert (self.is_alive())
         if check_server:
             r = get(self._endpoint("secondsLeft"),
                     cookies=self.cookies,
                     headers=_HEADERS)
-            return int(r.text)
+            return int(r.text) % 600
         else:
-            return int(600 -
-                       (datetime.now() - self.updated_at).total_seconds())
+            if self.is_alive():
+                return int(600 -
+                           (datetime.now() - self.updated_at).total_seconds())
+            else:
+                return 0
+
+    def get_messages(self):
+        while True:
+            message = get(self._msg_endpoint(self.total_messages),
+                          cookies=self.cookies,
+                          headers=_HEADERS)
+            message = message.json()
+            if message:
+                self.messages.append(message[0])
+                self.total_messages += 1
+            else:
+                break
+        return self.messages
